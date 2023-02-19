@@ -9,7 +9,7 @@ from pip_requirements_parser import (  # type: ignore[import]
     RequirementsFile,
 )
 
-from ._vcs_registry import VcsFactory, vcs
+from ._vcs_registry import VcsRegistry, vcs_registry
 from ._cache import Cache
 from ._schemas import VcsVault
 from ._pip_vcs_url import PipVcsUrl, UnsupportedVcsUrlError
@@ -37,7 +37,7 @@ def _tag_commit_if_needed(
     pip_vcs_url: PipVcsUrl,
     cache: Cache,
     tag_name_factory: TagNameFactory,
-    vcs_factory: VcsFactory = vcs,
+    vcs_registry: VcsRegistry = vcs_registry,
 ) -> None:
     for tag in cache.get_commit_tags(
         pip_vcs_url.provider,
@@ -48,7 +48,7 @@ def _tag_commit_if_needed(
         if tag_name_factory.matches_tag(tag):
             # we have a tag in cache, assume it has not been removed on the remote
             return
-    remote_tags = vcs_factory(pip_vcs_url.vcs).get_remote_tags_for_commit(
+    remote_tags = vcs_registry(pip_vcs_url.vcs).get_remote_tags_for_commit(
         pip_vcs_url.vcs_url(), pip_vcs_url.revision
     )
     new_tags = []
@@ -59,7 +59,7 @@ def _tag_commit_if_needed(
     else:
         # no matching tag found on the remote, create one
         tag = tag_name_factory.make_tag(pip_vcs_url.revision)
-        vcs_factory(pip_vcs_url.vcs).place_tag_on_commit(
+        vcs_registry(pip_vcs_url.vcs).place_tag_on_commit(
             pip_vcs_url.vcs_url(),
             pip_vcs_url.vcs_url(for_push=True),
             pip_vcs_url.revision,
@@ -81,13 +81,13 @@ def _push_and_tag_commit_to_vault(
     vcs_vault: VcsVault,
     cache: Cache,
     tag_name_factory: TagNameFactory,
-    vcs_factory: VcsFactory = vcs,
+    vcs_registry: VcsRegistry = vcs_registry,
 ) -> PipVcsUrl:
     vault_pip_vcs_url = pip_vcs_url.with_provider(
         provider=vcs_vault.provider, owner=vcs_vault.owner, ssh_only=vcs_vault.ssh_only
     )
     tag = tag_name_factory.make_tag(pip_vcs_url.revision)
-    vcs_factory(pip_vcs_url.vcs).place_tag_on_commit(
+    vcs_registry(pip_vcs_url.vcs).place_tag_on_commit(
         pip_vcs_url.vcs_url(),
         vault_pip_vcs_url.vcs_url(for_push=True),
         pip_vcs_url.revision,
@@ -108,7 +108,7 @@ def tag_requirements_file(
     vcs_vaults: Sequence[VcsVault],
     cache: Cache,
     tag_name_factory: TagNameFactory,
-    vcs_factory: VcsFactory = vcs,
+    vcs_registry: VcsRegistry = vcs_registry,
 ) -> None:
     requirements_file = RequirementsFile.from_file(requirements_file_path)
     for requirement in requirements_file.requirements:
@@ -125,11 +125,11 @@ def tag_requirements_file(
                 # TODO log missing vault config
                 continue
             pip_vcs_url = _push_and_tag_commit_to_vault(
-                pip_vcs_url, vcs_vault, cache, tag_name_factory, vcs_factory
+                pip_vcs_url, vcs_vault, cache, tag_name_factory, vcs_registry
             )
             requirement.link = Link(str(pip_vcs_url))
         else:
-            _tag_commit_if_needed(pip_vcs_url, cache, tag_name_factory, vcs_factory)
+            _tag_commit_if_needed(pip_vcs_url, cache, tag_name_factory, vcs_registry)
     requirements_file_path.write_text(requirements_file.dumps(), encoding="utf-8")
 
 
@@ -138,9 +138,9 @@ def tag_requirements_files(
     vcs_vaults: Sequence[VcsVault],
     cache: Cache,
     tag_name_factory: TagNameFactory,
-    vcs_factory: VcsFactory = vcs,
+    vcs_registry: VcsRegistry = vcs_registry,
 ) -> None:
     for requirements_file in requirements_files:
         tag_requirements_file(
-            requirements_file, vcs_vaults, cache, tag_name_factory, vcs_factory
+            requirements_file, vcs_vaults, cache, tag_name_factory, vcs_registry
         )

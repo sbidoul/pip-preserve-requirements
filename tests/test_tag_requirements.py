@@ -69,7 +69,7 @@ def test_tag_commit_if_needed_needed(tmp_path: Path) -> None:
     vcs = Mock()
     vcs.get_remote_tags_for_commit.return_value = ["v1.1"]
     _tag_commit_if_needed(
-        pip_vcs_url, cache, tag_name_factory, vcs_factory=lambda _name: vcs
+        pip_vcs_url, cache, tag_name_factory, vcs_registry=lambda _name: vcs
     )
     assert cache.get_commit_tags(
         pip_vcs_url.provider, pip_vcs_url.owner, pip_vcs_url.repo, pip_vcs_url.revision
@@ -92,7 +92,7 @@ def test_tag_commit_if_needed_not_needed(tmp_path: Path) -> None:
     vcs = Mock()
     vcs.get_remote_tags_for_commit.return_value = [f"ppr-{SHA}"]
     _tag_commit_if_needed(
-        pip_vcs_url, cache, tag_name_factory, vcs_factory=lambda _name: vcs
+        pip_vcs_url, cache, tag_name_factory, vcs_registry=lambda _name: vcs
     )
     assert cache.get_commit_tags(
         pip_vcs_url.provider, pip_vcs_url.owner, pip_vcs_url.repo, pip_vcs_url.revision
@@ -117,7 +117,7 @@ def test_tag_commit_if_needed_cached(tmp_path: Path) -> None:
     tag_name_factory = TagNameFactory("ppr-", match_any_tag=False)
     vcs = Mock()
     _tag_commit_if_needed(
-        pip_vcs_url, cache, tag_name_factory, vcs_factory=lambda _name: vcs
+        pip_vcs_url, cache, tag_name_factory, vcs_registry=lambda _name: vcs
     )
     vcs.get_remote_tags_for_commit.assert_not_called()
     vcs.place_tag_on_commit.assert_not_called()
@@ -133,7 +133,7 @@ def test_tag_commit_if_needed_any_tag(tmp_path: Path) -> None:
     vcs = Mock()
     vcs.get_remote_tags_for_commit.return_value = ["v1.1"]
     _tag_commit_if_needed(
-        pip_vcs_url, cache, tag_name_factory, vcs_factory=lambda _name: vcs
+        pip_vcs_url, cache, tag_name_factory, vcs_registry=lambda _name: vcs
     )
     assert cache.get_commit_tags(
         pip_vcs_url.provider, pip_vcs_url.owner, pip_vcs_url.repo, pip_vcs_url.revision
@@ -162,7 +162,7 @@ def test_tag_requirements_file_basic(tmp_path: Path) -> None:
         [VcsVault(provider="gitlab.acme.com", owner="acme", default=True)],
         cache,
         TagNameFactory("ppr-", match_any_tag=False),
-        vcs_factory=lambda _name: vcs,
+        vcs_registry=lambda _name: vcs,
     )
     assert requirements_file_path.read_text() == textwrap.dedent(
         f"""\
@@ -206,7 +206,7 @@ def test_tag_requirements_file_private_vault(tmp_path: Path) -> None:
         ],
         cache,
         TagNameFactory("ppr-", match_any_tag=False),
-        vcs_factory=lambda _name: vcs,
+        vcs_registry=lambda _name: vcs,
     )
     assert requirements_file_path.read_text() == textwrap.dedent(
         f"""\

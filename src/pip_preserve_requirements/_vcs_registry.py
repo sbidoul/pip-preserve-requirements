@@ -7,10 +7,10 @@ from ._vcs import Vcs
 from ._vcs_git import GitVcs
 
 
-VcsFactory = Callable[[str], Vcs]
+VcsRegistry = Callable[[str], Vcs]
 
 
-def vcs(name: str) -> Vcs:
+def vcs_registry(name: str) -> Vcs:
     if name == "git":
         return GitVcs()
     raise ValueError(f"Unsupported VCS: {name}")
