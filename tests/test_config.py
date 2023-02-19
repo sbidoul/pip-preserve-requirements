@@ -60,3 +60,8 @@ def test_config_error(tmp_path: Path) -> None:
     )
     with pytest.raises(pydantic.ValidationError):
         Config.from_pyproject_toml(tmp_path)
+
+
+def test_config_no_pyproject_toml(tmp_path: Path) -> None:
+    config = Config.from_pyproject_toml(tmp_path)
+    assert config.vcs_vaults == []
