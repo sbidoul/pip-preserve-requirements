@@ -46,6 +46,11 @@ def test_pip_vcs_url_no_revision() -> None:
             "https://github.com/sbidoul/pip-preserve-requirements",
         ),
         (
+            f"git+https://$USR:$PWD@github.com/sbidoul/pip-preserve-requirements@{SHA}",
+            False,
+            "https://$USR:$PWD@github.com/sbidoul/pip-preserve-requirements",
+        ),
+        (
             f"git+https://github.com/sbidoul/pip-preserve-requirements@{SHA}",
             True,
             "ssh://git@github.com/sbidoul/pip-preserve-requirements",
@@ -60,7 +65,14 @@ def test_vcs_url(url: str, for_push: bool, expected: str) -> None:
 @pytest.mark.parametrize(
     "url",
     [
+        # invalid scheme
         "https://github.com/sbidoul/pip-preserve-requirements.git",
+        # no hostname
+        "git+https:///sbidoul/pip-preserve-requirements.git",
+        # invalid netloc
+        "git+https://github[.com/sbidoul/pip-preserve-requirements.git",
+        # invalid path
+        "git+https://github.com/sbidoul/wtf/pip-preserve-requirements.git",
     ],
 )
 def test_unsupported_vcs_url(url: str) -> None:
