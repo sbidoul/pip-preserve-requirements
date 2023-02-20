@@ -34,7 +34,7 @@ class PipVcsUrl:
             split_result = urlsplit(url)
         except Exception as e:
             raise UnsupportedVcsUrlError(url) from e
-        if split_result.scheme not in ("git+ssh", "git+https", "git+http"):
+        if split_result.scheme not in ("git+ssh", "git+https"):
             raise UnsupportedVcsUrlError(url)
         if not split_result.hostname:
             raise UnsupportedVcsUrlError(url)

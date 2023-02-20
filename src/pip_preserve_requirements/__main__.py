@@ -71,7 +71,7 @@ def command(
         ),
     ),
 ) -> None:
-    """Ensure pinned VCS requirements in pip requirements files have a git tag."""
+    """Ensure pinned VCS references in pip requirements files have a git tag."""
     config = Config.from_pyproject_toml(project_root)
     cache = Cache(project_root)
     tag_name_factory = TagNameFactory(tag_prefix, match_any_tag)
