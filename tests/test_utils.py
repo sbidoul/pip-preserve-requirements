@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
+from pytest import CaptureFixture
+
 from pip_preserve_requirements._utils import (
     decrease_verbosity,
     increase_verbosity,
@@ -12,7 +14,7 @@ from pip_preserve_requirements._utils import (
 )
 
 
-def test_log_debug(capsys):
+def test_log_debug(capsys: CaptureFixture[str]) -> None:
     log_debug("debug")
     assert "debug" not in capsys.readouterr().err
     increase_verbosity()
@@ -23,23 +25,23 @@ def test_log_debug(capsys):
         decrease_verbosity()
 
 
-def test_log_info(capsys):
+def test_log_info(capsys: CaptureFixture[str]) -> None:
     log_info("in", nl=False)
     log_info("fo")
     assert capsys.readouterr().err == "info\n"
 
 
-def test_log_notice(capsys):
+def test_log_notice(capsys: CaptureFixture[str]) -> None:
     log_notice("in", nl=False)
     log_notice("fo")
     assert capsys.readouterr().err == "info\n"
 
 
-def test_log_warning(capsys):
+def test_log_warning(capsys: CaptureFixture[str]) -> None:
     log_warning("warning")
     assert capsys.readouterr().err == "warning\n"
 
 
-def test_log_error(capsys):
+def test_log_error(capsys: CaptureFixture[str]) -> None:
     log_error("error")
     assert capsys.readouterr().err == "error\n"
