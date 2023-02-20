@@ -79,7 +79,7 @@ default = true
 
 ## Limitations
 
-At the moment, only `git+https` and git+ssh` URLs are supported.
+At the moment, only `git+https` and `git+ssh` URLs are supported.
 
 The following improvements would be considered in scope, although there is no current
 plan to work on them:
