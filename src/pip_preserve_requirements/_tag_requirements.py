@@ -14,6 +14,7 @@ from ._cache import Cache
 from ._schemas import VcsVault
 from ._pip_vcs_url import PipVcsUrl, UnsupportedVcsUrlError
 from ._tag_name_factory import TagNameFactory
+from ._utils import log_warning
 
 
 def get_vault_for_pip_vcs_url(
@@ -117,12 +118,17 @@ def tag_requirements_file(
         try:
             pip_vcs_url = PipVcsUrl.from_url(requirement.link.url)
         except UnsupportedVcsUrlError:
-            # TODO log ignored requirement
+            log_warning(
+                f"Can't preserve unsupported requirement URL: {requirement.link.url}"
+            )
             continue
         vcs_vault, needs_push = get_vault_for_pip_vcs_url(pip_vcs_url, vcs_vaults)
         if needs_push:
             if vcs_vault is None:
-                # TODO log missing vault config
+                log_warning(
+                    f"No vault defined for: {requirement.link.url}. "
+                    f"Make sure to configure a vcs_vault with default = true."
+                )
                 continue
             pip_vcs_url = _push_and_tag_commit_to_vault(
                 pip_vcs_url, vcs_vault, cache, tag_name_factory, vcs_registry

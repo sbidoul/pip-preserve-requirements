@@ -141,7 +141,7 @@ def test_tag_commit_if_needed_any_tag(tmp_path: Path) -> None:
     vcs.place_tag_on_commit.assert_not_called()
 
 
-def test_tag_requirements_file_basic(tmp_path: Path) -> None:
+def test_tag_requirements_file_basic(tmp_path: Path, capsys) -> None:
     """A basic integration test."""
     requirements_file_path = tmp_path / "requirements.txt"
     requirements_file_path.write_text(
@@ -151,6 +151,8 @@ def test_tag_requirements_file_basic(tmp_path: Path) -> None:
             git+https://gitlab.acme.com/acme/my-repo@{SHA2}
             git+ssh://git@github.com/upstream/private-repo@{SHA3}
             --find-links=https://example.com/wheelhouse
+            pkga==1.0
+            https://example.com/pkgb-1.0.tar.gz
             """
         )
     )
@@ -170,6 +172,8 @@ def test_tag_requirements_file_basic(tmp_path: Path) -> None:
             git+https://gitlab.acme.com/acme/my-repo@{SHA2}
             git+ssh://git@gitlab.acme.com/acme/private-repo@{SHA3}
             --find-links https://example.com/wheelhouse
+            pkga==1.0
+            https://example.com/pkgb-1.0.tar.gz
         """
     )
     assert cache.get_commit_tags("gitlab.acme.com", "acme", "mis-builder", SHA) == [
@@ -181,6 +185,10 @@ def test_tag_requirements_file_basic(tmp_path: Path) -> None:
     assert cache.get_commit_tags("gitlab.acme.com", "acme", "private-repo", SHA3) == [
         f"ppr-{SHA3}"
     ]
+    assert (
+        capsys.readouterr().err == "Can't preserve unsupported requirement URL: "
+        "https://example.com/pkgb-1.0.tar.gz\n"
+    )
 
 
 def test_tag_requirements_file_private_vault(tmp_path: Path) -> None:
@@ -190,7 +198,6 @@ def test_tag_requirements_file_private_vault(tmp_path: Path) -> None:
             f"""\
             --find-links=https://example.com/wheelhouse
             git+https://github.com/OCA/mis-builder@{SHA}
-            pkga==1.0
             """
         )
     )
@@ -212,6 +219,5 @@ def test_tag_requirements_file_private_vault(tmp_path: Path) -> None:
         f"""\
             --find-links https://example.com/wheelhouse
             git+ssh://git@gitlab.acme.com/acme/mis-builder@{SHA}
-            pkga==1.0
         """
     )
