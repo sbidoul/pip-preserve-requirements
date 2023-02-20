@@ -5,6 +5,8 @@ import textwrap
 from pathlib import Path
 from unittest.mock import Mock
 
+from pytest import CaptureFixture
+
 from pip_preserve_requirements._tag_requirements import (
     get_vault_for_pip_vcs_url,
     tag_requirements_file,
@@ -141,7 +143,9 @@ def test_tag_commit_if_needed_any_tag(tmp_path: Path) -> None:
     vcs.place_tag_on_commit.assert_not_called()
 
 
-def test_tag_requirements_file_basic(tmp_path: Path, capsys) -> None:
+def test_tag_requirements_file_basic(
+    tmp_path: Path, capsys: CaptureFixture[str]
+) -> None:
     """A basic integration test."""
     requirements_file_path = tmp_path / "requirements.txt"
     requirements_file_path.write_text(
