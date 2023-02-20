@@ -189,8 +189,16 @@ def test_tag_requirements_file_basic(
     assert cache.get_commit_tags("gitlab.acme.com", "acme", "private-repo", SHA3) == [
         f"ppr-{SHA3}"
     ]
-    assert (
-        capsys.readouterr().err == "Can't preserve unsupported requirement URL: "
+    assert capsys.readouterr().err == (
+        "Pushing https://github.com/OCA/mis-builder to "
+        "ssh://git@gitlab.acme.com/acme/mis-builder and "
+        "tagging as ppr-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+        "Creating tag ppr-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb on "
+        "https://gitlab.acme.com/acme/my-repo\n"
+        "Pushing ssh://git@github.com/upstream/private-repo to "
+        "ssh://git@gitlab.acme.com/acme/private-repo and "
+        "tagging as ppr-cccccccccccccccccccccccccccccccccccccccc\n"
+        "Can't preserve unsupported requirement URL: "
         "https://example.com/pkgb-1.0.tar.gz\n"
     )
 
