@@ -15,6 +15,7 @@ from ._schemas import VcsVault
 from ._pip_vcs_url import PipVcsUrl, UnsupportedVcsUrlError
 from ._tag_name_factory import TagNameFactory
 from ._utils import log_warning
+from ._norm_reqs import normalize_req_lines
 
 
 def get_vault_for_pip_vcs_url(
@@ -136,7 +137,9 @@ def tag_requirements_file(
             requirement.link = Link(str(pip_vcs_url))
         else:
             _tag_commit_if_needed(pip_vcs_url, cache, tag_name_factory, vcs_registry)
-    requirements_file_path.write_text(requirements_file.dumps(), encoding="utf-8")
+    requirements_file_path.write_text(
+        normalize_req_lines(requirements_file.dumps()), encoding="utf-8"
+    )
 
 
 def tag_requirements_files(
