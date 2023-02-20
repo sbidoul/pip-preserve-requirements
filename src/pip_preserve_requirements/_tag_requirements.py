@@ -14,7 +14,7 @@ from ._cache import Cache
 from ._schemas import VcsVault
 from ._pip_vcs_url import PipVcsUrl, UnsupportedVcsUrlError
 from ._tag_name_factory import TagNameFactory
-from ._utils import log_warning
+from ._utils import log_warning, log_info
 from ._norm_reqs import normalize_req_lines
 
 
@@ -61,6 +61,7 @@ def _tag_commit_if_needed(
     else:
         # no matching tag found on the remote, create one
         tag = tag_name_factory.make_tag(pip_vcs_url.revision)
+        log_info(f"Creating tag {tag} on {pip_vcs_url.vcs_url()}")
         vcs_registry(pip_vcs_url.vcs).place_tag_on_commit(
             pip_vcs_url.vcs_url(),
             pip_vcs_url.vcs_url(for_push=True),
@@ -89,9 +90,12 @@ def _push_and_tag_commit_to_vault(
         provider=vcs_vault.provider, owner=vcs_vault.owner, ssh_only=vcs_vault.ssh_only
     )
     tag = tag_name_factory.make_tag(pip_vcs_url.revision)
+    source_url = pip_vcs_url.vcs_url()
+    target_url = vault_pip_vcs_url.vcs_url(for_push=True)
+    log_info(f"Pushing {source_url} to {target_url} and tagging as {tag}")
     vcs_registry(pip_vcs_url.vcs).place_tag_on_commit(
-        pip_vcs_url.vcs_url(),
-        vault_pip_vcs_url.vcs_url(for_push=True),
+        source_url,
+        target_url,
         pip_vcs_url.revision,
         tag,
     )
