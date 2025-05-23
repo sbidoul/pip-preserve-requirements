@@ -64,5 +64,5 @@ show_error_codes = true
 [tool.ruff]
 fix = true
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["pip_preserve_requirements"]

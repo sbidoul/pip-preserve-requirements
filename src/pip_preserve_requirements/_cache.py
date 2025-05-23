@@ -58,8 +58,7 @@ class Cache:
         self, provider: str, owner: str, repo: str, sha: str
     ) -> None:
         query = (
-            "DELETE FROM tags WHERE "
-            "provider = ? AND owner = ? AND repo = ? AND sha = ?"
+            "DELETE FROM tags WHERE provider = ? AND owner = ? AND repo = ? AND sha = ?"
         )
         params = [provider, owner, repo, sha]
         self._tags_db_conn.execute(query, params)
