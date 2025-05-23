@@ -4,7 +4,7 @@
 from pathlib import Path
 from typing import Sequence, Tuple, Optional
 
-from pip_requirements_parser import (  # type: ignore[import]
+from pip_requirements_parser import (  # type: ignore[import-untyped]
     Link,
     RequirementsFile,
 )
