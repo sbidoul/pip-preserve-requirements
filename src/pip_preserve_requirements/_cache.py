@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from pathlib import Path
-from typing import Sequence
 import sqlite3
+from collections.abc import Sequence
+from pathlib import Path
 
 
 class Cache:
@@ -58,8 +58,7 @@ class Cache:
         self, provider: str, owner: str, repo: str, sha: str
     ) -> None:
         query = (
-            "DELETE FROM tags WHERE "
-            "provider = ? AND owner = ? AND repo = ? AND sha = ?"
+            "DELETE FROM tags WHERE provider = ? AND owner = ? AND repo = ? AND sha = ?"
         )
         params = [provider, owner, repo, sha]
         self._tags_db_conn.execute(query, params)

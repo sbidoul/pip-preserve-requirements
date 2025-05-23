@@ -6,18 +6,18 @@ build-backend = "hatchling.build"
 name = "pip-preserve-requirements"
 description = "Preserve pinned PIP requirements in repositories you control.."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 license = "MIT"
 keywords = []
 authors = [{ name = "Stéphane Bidoul", email = "stephane.bidoul@gmail.com" }]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -63,7 +63,20 @@ show_error_codes = true
 
 [tool.ruff]
 fix = true
-target-version = "py37"
 
-[tool.ruff.isort]
+[tool.ruff.lint]
+select = [
+  "B",
+  "C4",
+  "C90",
+  "E",
+  "F",
+  "FA",
+  "I",
+  "RUF",
+  "UP",
+  "W",
+]
+
+[tool.ruff.lint.isort]
 known-first-party = ["pip_preserve_requirements"]

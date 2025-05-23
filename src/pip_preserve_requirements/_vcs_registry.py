@@ -6,7 +6,6 @@ from typing import Callable
 from ._vcs import Vcs
 from ._vcs_git import GitVcs
 
-
 VcsRegistry = Callable[[str], Vcs]
 
 

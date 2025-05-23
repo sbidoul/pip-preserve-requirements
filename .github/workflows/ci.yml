@@ -14,17 +14,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.7", "3.11"]
+        python-version: ["3.9", "3.13"]
         os: ["ubuntu-latest", "windows-latest", "macos-latest"]
         include:
           - os: ubuntu-latest
-            python-version: "3.7"
-          - os: ubuntu-latest
-            python-version: "3.8"
-          - os: ubuntu-latest
-            python-version: "3.9"
-          - os: ubuntu-latest
             python-version: "3.10"
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.12"
     steps:
       - uses: "actions/checkout@v3"
       - uses: "actions/setup-python@v4"

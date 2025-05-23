@@ -1,26 +1,28 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from pathlib import Path
-from typing import Sequence, Tuple, Optional
+from __future__ import annotations
 
-from pip_requirements_parser import (  # type: ignore[import]
+from collections.abc import Sequence
+from pathlib import Path
+
+from pip_requirements_parser import (  # type: ignore[import-untyped]
     Link,
     RequirementsFile,
 )
 
-from ._vcs_registry import VcsRegistry, vcs_registry
 from ._cache import Cache
-from ._schemas import VcsVault
-from ._pip_vcs_url import PipVcsUrl, UnsupportedVcsUrlError
-from ._tag_name_factory import TagNameFactory
-from ._utils import log_warning, log_info
 from ._norm_reqs import normalize_req_lines
+from ._pip_vcs_url import PipVcsUrl, UnsupportedVcsUrlError
+from ._schemas import VcsVault
+from ._tag_name_factory import TagNameFactory
+from ._utils import log_info, log_warning
+from ._vcs_registry import VcsRegistry, vcs_registry
 
 
 def get_vault_for_pip_vcs_url(
     pip_vcs_url: PipVcsUrl, vcs_vaults: Sequence[VcsVault]
-) -> Tuple[Optional[VcsVault], bool]:
+) -> tuple[VcsVault | None, bool]:
     """Return the vault to use for the given url,
     and a flag telling whether a push to that vault is required."""
     default_vault = None

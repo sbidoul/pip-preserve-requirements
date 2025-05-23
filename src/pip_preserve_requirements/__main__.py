@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 import typer
 
@@ -33,7 +33,7 @@ def _project_root_callback(
 
 @app.command()
 def command(
-    requirements_files: List[Path] = typer.Argument(  # noqa: B008
+    requirements_files: list[Path] = typer.Argument(  # noqa: B008
         ...,
         metavar="REQUIREMENTS_FILE...",
         file_okay=True,
@@ -42,10 +42,10 @@ def command(
         help=("The requirements files to look for requirements tag."),
     ),
     *,
-    tag_prefix: str = typer.Option(  # noqa: B008
+    tag_prefix: str = typer.Option(
         "ppr-", "--tag-prefix", help="The prefix to use when creating git tag names."
     ),
-    match_any_tag: bool = typer.Option(  # noqa: B008
+    match_any_tag: bool = typer.Option(
         False,
         "--match-any-tag",
         help=(
