@@ -66,15 +66,16 @@ fix = true
 
 [tool.ruff.lint]
 select = [
-  "E",
-  "F",
-  "I",
   "B",
   "C4",
   "C90",
-  "W",
-  "UP",
+  "E",
+  "F",
+  "FA",
+  "I",
   "RUF",
+  "UP",
+  "W",
 ]
 
 [tool.ruff.lint.isort]

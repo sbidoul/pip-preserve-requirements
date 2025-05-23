@@ -1,9 +1,10 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
+from __future__ import annotations
+
 import dataclasses
 import re
-from typing import Optional
 from urllib.parse import SplitResult, urlsplit
 
 
@@ -19,17 +20,17 @@ _PATH_RE = re.compile(
 @dataclasses.dataclass
 class PipVcsUrl:
     scheme: str
-    username: Optional[str]
-    password: Optional[str]
+    username: str | None
+    password: str | None
     hostname: str
     owner: str
     repo: str
     revision: str
-    query: Optional[str]
-    fragment: Optional[str]
+    query: str | None
+    fragment: str | None
 
     @classmethod
-    def from_url(cls, url: str) -> "PipVcsUrl":
+    def from_url(cls, url: str) -> PipVcsUrl:
         try:
             split_result = urlsplit(url)
         except Exception as e:
@@ -100,7 +101,7 @@ class PipVcsUrl:
 
     def with_provider(
         self, provider: str, owner: str, ssh_only: bool = False
-    ) -> "PipVcsUrl":
+    ) -> PipVcsUrl:
         scheme = self.scheme
         username = self.username
         password = self.password
