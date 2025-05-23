@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Optional, Sequence, Tuple
+from typing import Optional
 
 from pip_requirements_parser import (  # type: ignore[import-untyped]
     Link,
@@ -20,7 +21,7 @@ from ._vcs_registry import VcsRegistry, vcs_registry
 
 def get_vault_for_pip_vcs_url(
     pip_vcs_url: PipVcsUrl, vcs_vaults: Sequence[VcsVault]
-) -> Tuple[Optional[VcsVault], bool]:
+) -> tuple[Optional[VcsVault], bool]:
     """Return the vault to use for the given url,
     and a flag telling whether a push to that vault is required."""
     default_vault = None

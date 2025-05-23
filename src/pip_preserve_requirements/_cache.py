@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 import sqlite3
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
 
 
 class Cache:

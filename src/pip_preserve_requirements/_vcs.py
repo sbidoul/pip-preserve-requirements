@@ -2,12 +2,11 @@
 # SPDX-License-Identifier: MIT
 
 from abc import ABC, abstractmethod
-from typing import List
 
 
 class Vcs(ABC):
     @abstractmethod
-    def get_remote_tags_for_commit(self, url: str, commit: str) -> List[str]: ...
+    def get_remote_tags_for_commit(self, url: str, commit: str) -> list[str]: ...
 
     @abstractmethod
     def place_tag_on_commit(

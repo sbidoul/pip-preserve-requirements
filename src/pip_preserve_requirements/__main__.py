@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 import typer
 
@@ -33,7 +33,7 @@ def _project_root_callback(
 
 @app.command()
 def command(
-    requirements_files: List[Path] = typer.Argument(  # noqa: B008
+    requirements_files: list[Path] = typer.Argument(  # noqa: B008
         ...,
         metavar="REQUIREMENTS_FILE...",
         file_okay=True,

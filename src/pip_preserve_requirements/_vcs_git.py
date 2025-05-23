@@ -3,13 +3,12 @@
 
 import subprocess
 import tempfile
-from typing import List
 
 from ._vcs import Vcs
 
 
 class GitVcs(Vcs):
-    def get_remote_tags_for_commit(self, url: str, sha: str) -> List[str]:
+    def get_remote_tags_for_commit(self, url: str, sha: str) -> list[str]:
         remote_tags = []
         tag_prefix = "refs/tags/"
         tag_lines = subprocess.run(

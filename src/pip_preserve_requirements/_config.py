@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 
 from pathlib import Path
-from typing import List
 
 from pydantic import BaseModel
 
@@ -11,7 +10,7 @@ from ._schemas import VcsVault
 
 
 class Config(BaseModel):
-    vcs_vaults: List[VcsVault] = []
+    vcs_vaults: list[VcsVault] = []
 
     @classmethod
     def from_pyproject_toml(cls, project_root: Path) -> "Config":
