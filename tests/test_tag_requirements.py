@@ -7,16 +7,16 @@ from unittest.mock import Mock
 
 from pytest import CaptureFixture
 
+from pip_preserve_requirements._cache import Cache
+from pip_preserve_requirements._pip_vcs_url import PipVcsUrl
+from pip_preserve_requirements._schemas import VcsVault
+from pip_preserve_requirements._tag_name_factory import TagNameFactory
 from pip_preserve_requirements._tag_requirements import (
+    _tag_commit_if_needed,
     get_vault_for_pip_vcs_url,
     tag_requirements_file,
     tag_requirements_files,
-    _tag_commit_if_needed,
 )
-from pip_preserve_requirements._pip_vcs_url import PipVcsUrl
-from pip_preserve_requirements._schemas import VcsVault
-from pip_preserve_requirements._cache import Cache
-from pip_preserve_requirements._tag_name_factory import TagNameFactory
 
 SHA = "a" * 40
 SHA2 = "b" * 40

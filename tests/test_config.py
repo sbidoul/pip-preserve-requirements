@@ -1,11 +1,11 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from pathlib import Path
 import textwrap
+from pathlib import Path
 
-import pytest
 import pydantic
+import pytest
 
 from pip_preserve_requirements._config import Config
 

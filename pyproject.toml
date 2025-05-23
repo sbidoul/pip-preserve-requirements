@@ -64,5 +64,12 @@ show_error_codes = true
 [tool.ruff]
 fix = true
 
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "I",
+]
+
 [tool.ruff.lint.isort]
 known-first-party = ["pip_preserve_requirements"]

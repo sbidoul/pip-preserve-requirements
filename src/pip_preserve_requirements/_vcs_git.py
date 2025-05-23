@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MIT
 
 import subprocess
-from typing import List
 import tempfile
+from typing import List
 
 from ._vcs import Vcs
 

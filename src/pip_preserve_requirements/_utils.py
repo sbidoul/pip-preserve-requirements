@@ -3,7 +3,6 @@
 
 import typer
 
-
 _verbosity = 0
 
 

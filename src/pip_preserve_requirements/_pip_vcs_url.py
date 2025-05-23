@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
-import re
 import dataclasses
-from urllib.parse import urlsplit, SplitResult
+import re
 from typing import Optional
+from urllib.parse import SplitResult, urlsplit
 
 
 class UnsupportedVcsUrlError(Exception):

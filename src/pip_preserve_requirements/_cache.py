@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
+import sqlite3
 from pathlib import Path
 from typing import Sequence
-import sqlite3
 
 
 class Cache:
