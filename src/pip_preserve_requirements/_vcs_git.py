@@ -49,12 +49,19 @@ class GitVcs(Vcs):
         self, source_repo: str, target_repo: str, sha: str, tag: str
     ) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
+            clone_cmd = [
+                "git",
+                "clone",
+                "--bare",
+                "--filter=blob:none",
+                source_repo,
+                tmpdir,
+            ]
+            if self._get_git_version() >= (2, 49):
+                # git 2.49 learned to clone a single commit with --revision
+                clone_cmd.extend(["--revision", sha])
             subprocess.run(
-                ["git", "clone", "--bare", "--depth=1", source_repo, tmpdir],
-                check=True,
-            )
-            subprocess.run(
-                ["git", "-C", tmpdir, "fetch", source_repo, sha],
+                clone_cmd,
                 check=True,
             )
             subprocess.run(
