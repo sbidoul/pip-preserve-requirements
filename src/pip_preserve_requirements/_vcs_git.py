@@ -1,13 +1,35 @@
 # SPDX-FileCopyrightText: 2023-present Stéphane Bidoul <stephane.bidoul@gmail.com>
 # SPDX-License-Identifier: MIT
 
+import re
 import subprocess
 import tempfile
 
 from ._vcs import Vcs
 
+GIT_VERSION_REGEX = re.compile(
+    r"^git version "  # Prefix.
+    r"(\d+)"  # Major.
+    r"\.(\d+)"  # Dot, minor.
+    r"(?:\.(\d+))?"  # Optional dot, patch.
+    r".*$"  # Suffix, including any pre- and post-release segments we don't care about.
+)
+
 
 class GitVcs(Vcs):
+    @classmethod
+    def _get_git_version(cls) -> tuple[int, ...]:
+        version = subprocess.run(
+            ["git", "version"],
+            check=True,
+            text=True,
+            capture_output=True,
+        ).stdout.strip()
+        match = GIT_VERSION_REGEX.match(version)
+        if not match:
+            return ()
+        return (int(match.group(1)), int(match.group(2)))
+
     def get_remote_tags_for_commit(self, url: str, sha: str) -> list[str]:
         remote_tags = []
         tag_prefix = "refs/tags/"
