@@ -28,7 +28,11 @@ class GitVcs(Vcs):
     ) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             subprocess.run(
-                ["git", "clone", "--bare", "--filter=blob:none", source_repo, tmpdir],
+                ["git", "clone", "--bare", "--depth=1", source_repo, tmpdir],
+                check=True,
+            )
+            subprocess.run(
+                ["git", "-C", tmpdir, "fetch", source_repo, sha],
                 check=True,
             )
             subprocess.run(
