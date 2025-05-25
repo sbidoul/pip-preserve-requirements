@@ -35,7 +35,7 @@ jobs:
           python -m pip install -e .[test]
       - name: "Run tests for ${{ matrix.python-version }}"
         run: "coverage run -m pytest tests/"
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v5
   mypy:
     runs-on: ubuntu-latest
     steps:
