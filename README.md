@@ -86,7 +86,8 @@ plan to work on them:
 
 - supporting other VCS (such as `hg`);
 - supporting non-VCS URLs, by pushing them to a user-controlled server;
-- supporting regular requirements, by pushing them to a user-controlled index.
+- supporting regular requirements, by pushing them to a user-controlled index;
+- supporting other lockfile formats (pylock.toml, uv.lock, ...).
 
 ## License
 
