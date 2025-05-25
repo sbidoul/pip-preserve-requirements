@@ -62,7 +62,7 @@ Example:
 
 ```toml
 [tool.pip-preserve-requirements]
-tag_prefix = "ppr-"
+tag_prefix = "ppr+"
 # ensure a tag with the above prefix is present, if true, consider any tag is valid
 match_any_tag = false
 
